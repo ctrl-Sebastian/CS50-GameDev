@@ -10,11 +10,13 @@ function Powerup:init(skin)
 
     -- these variables are for keeping track of our velocity on both the
     -- X and Y axis, since the Powerup can move in two dimensions
-    self.dy = 0
+    self.dx = 0
+    self.dy = 35
 
     -- this will effectively be the color of our Powerup, and we will index
     -- our table of Quads relating to the global block texture using this
     self.skin = skin
+    self.inPlay = true
 end
 
 --[[
@@ -35,26 +37,20 @@ function Powerup:collides(target)
     end 
 
     -- if the above aren't true, they're overlapping
-    gSounds['wall-hit']:play()
+    self.inPlay = false
     return true
 end
 
---[[
-    Places the Powerup in the middle of the screen, with no movement.
-]]
-function Powerup:reset()
-    self.x = VIRTUAL_WIDTH / 2 - 2
-    self.y = 0
-    self.dy = 0
-end
-
 function Powerup:update(dt)
+    self.x = self.x + self.dx * dt
     self.y = self.y + self.dy * dt
 end
 
 function Powerup:render()
     -- gTexture is our global texture for all blocks
     -- gPowerupFrames is a table of quads mapping to each individual Powerup skin in the texture
-    love.graphics.draw(gTextures['main'], gFrames['powerups'][self.skin],
+    if self.inPlay then
+        love.graphics.draw(gTextures['main'], gFrames['powerups'][self.skin],
         self.x, self.y)
+    end
 end

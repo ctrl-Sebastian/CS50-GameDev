@@ -35,9 +35,13 @@ function PlayState:enter(params)
     self.ball.dx = math.random(-200, 200)
     self.ball.dy = math.random(-50, -60)
 
+    self.multiball = false
+
     self.powerup = Powerup()
     self.powerup.skin = 9
-    self.powerup.dy = 50
+
+    self.key = Powerup()
+    self.key.skin = 10
 end
 
 function PlayState:update(dt)
@@ -54,17 +58,29 @@ function PlayState:update(dt)
         return
     end
 
+    if self.score > 300 then
+        self.paddle.size = 3
+    end
+    if self.score > 750 then
+        self.paddle.size = 4
+    end
+    
     -- update positions based on velocity
     self.paddle:update(dt)
     self.ball:update(dt)
-    
-    --Powerup
 
+    --Powerup
+    self.powerup:update(dt)
+    self.key:update(dt)
 
     if self.powerup:collides(self.paddle) then
-        
+        self.multiball = true
     end
 
+    --key
+    if self.key:collides(self.paddle) then
+        self.paddle.hasKey = true
+    end
 
     if self.ball:collides(self.paddle) then
         -- raise ball above paddle in case it goes below it, then reverse dy
@@ -89,9 +105,15 @@ function PlayState:update(dt)
 
     -- detect collision across all bricks with the ball
     for k, brick in pairs(self.bricks) do
-
         -- only check collision if we're in play
         if brick.inPlay and self.ball:collides(brick) then
+            if brick.isLocked and self.paddle.hasKey == false then
+                ::continue::
+            end
+
+            if brick.isLocked and self.paddle.hasKey then
+                self.score = self.score + 500
+            end
 
             -- add to score
             self.score = self.score + (brick.tier * 200 + brick.color * 25)
@@ -178,6 +200,10 @@ function PlayState:update(dt)
 
     -- if ball goes below bounds, revert to serve state and decrease health
     if self.ball.y >= VIRTUAL_HEIGHT then
+
+        if self.paddle.size > 0 then
+            self.paddle.size = self.paddle.size - 1
+        end
         self.health = self.health - 1
         gSounds['hurt']:play()
 
@@ -211,6 +237,7 @@ end
 
 function PlayState:render()
     self.powerup:render()
+    self.key:render()
 
     -- render bricks
     for k, brick in pairs(self.bricks) do
