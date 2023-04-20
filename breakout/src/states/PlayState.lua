@@ -127,7 +127,7 @@ function PlayState:update(dt)
             if brick.inPlay and ball:collides(brick) then
                 if self.paddle.haKey == true and brick.locked then
                     self.score = self.score + 5000
-                    brick:hit()
+                    brick.locked = false
                 elseif brick.locked and self.paddle.hasKey == false then
                     -- Do not give points when brick is locked
                     ::continue::
