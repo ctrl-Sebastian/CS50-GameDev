@@ -2,7 +2,7 @@ Powerup = Class{}
 
 function Powerup:init(skin)
     -- simple positional and dimensional variables
-    self.x = VIRTUAL_WIDTH / 2 - 2
+    self.x = math.random(VIRTUAL_WIDTH) / 2 - 2
     self.y = 0
 
     self.width = 16
