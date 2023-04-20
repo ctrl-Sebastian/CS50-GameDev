@@ -34,6 +34,10 @@ function PlayState:enter(params)
     -- give ball random starting velocity
     self.ball.dx = math.random(-200, 200)
     self.ball.dy = math.random(-50, -60)
+
+    self.powerup = Powerup()
+    self.powerup.skin = 9
+    self.powerup.dy = 50
 end
 
 function PlayState:update(dt)
@@ -53,6 +57,14 @@ function PlayState:update(dt)
     -- update positions based on velocity
     self.paddle:update(dt)
     self.ball:update(dt)
+    
+    --Powerup
+
+
+    if self.powerup:collides(self.paddle) then
+        
+    end
+
 
     if self.ball:collides(self.paddle) then
         -- raise ball above paddle in case it goes below it, then reverse dy
@@ -198,6 +210,8 @@ function PlayState:update(dt)
 end
 
 function PlayState:render()
+    self.powerup:render()
+
     -- render bricks
     for k, brick in pairs(self.bricks) do
         brick:render()
