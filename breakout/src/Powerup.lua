@@ -42,6 +42,9 @@ function Powerup:collides(target)
 end
 
 function Powerup:update(dt)
+
+
+
     self.x = self.x + self.dx * dt
     self.y = self.y + self.dy * dt
 end
@@ -49,7 +52,7 @@ end
 function Powerup:render()
     -- gTexture is our global texture for all blocks
     -- gPowerupFrames is a table of quads mapping to each individual Powerup skin in the texture
-    if self.inPlay then
+    if self.inPlay == true then
         love.graphics.draw(gTextures['main'], gFrames['powerups'][self.skin],
         self.x, self.y)
     end
