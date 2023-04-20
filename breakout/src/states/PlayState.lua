@@ -39,8 +39,6 @@ function PlayState:enter(params)
     self.balls[1].dx = math.random(-200, 200)
     self.balls[1].dy = math.random(-50, -60)
 
-    self.multiball = false
-
     self.powerup = Powerup()
     self.powerup.skin = 9
 
@@ -80,7 +78,7 @@ function PlayState:update(dt)
     
 
     if self.powerup:collides(self.paddle) then
-        self.multiball = true
+        self.powerup.inPlay = false
         if self.numBalls == 1 then
             ball2 = Ball(math.random(7))
     
@@ -97,6 +95,7 @@ function PlayState:update(dt)
     --key
     if self.key:collides(self.paddle) then
         self.paddle.hasKey = true
+        
     end
 
     for k, ball in pairs(self.balls) do
@@ -126,20 +125,17 @@ function PlayState:update(dt)
         for k, brick in pairs(self.bricks) do
             -- only check collision if we're in play
             if brick.inPlay and ball:collides(brick) then
-                if brick.isLocked and self.paddle.hasKey == false then
+                if self.paddle.haKey == true and brick.locked then
+                    self.score = self.score + 5000
+                    brick:hit()
+                elseif brick.locked and self.paddle.hasKey == false then
+                    -- Do not give points when brick is locked
                     ::continue::
                 end
-
-                if brick.isLocked and self.paddle.hasKey then
-                    self.score = self.score + 500
-                end
-
-                -- add to score
-                self.score = self.score + (brick.tier * 200 + brick.color * 25)
-
                 -- trigger the brick's hit function, which removes it from play
                 brick:hit()
-
+                
+                self.score = self.score + (brick.tier * 200 + brick.color * 25)
                 -- if we have enough points, recover a point of health
                 if self.score > self.recoverPoints then
                     -- can't go above 3 health

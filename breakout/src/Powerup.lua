@@ -16,7 +16,7 @@ function Powerup:init(skin)
     -- this will effectively be the color of our Powerup, and we will index
     -- our table of Quads relating to the global block texture using this
     self.skin = skin
-    self.inPlay = true
+    self.inPlay = false
 end
 
 --[[
@@ -42,11 +42,24 @@ function Powerup:collides(target)
 end
 
 function Powerup:update(dt)
-
+    if math.random(100) < 20 then  -- % chance of getting a powerup
+        if math.random(100) < 25 then -- if powerup, 25 % chance it's a key
+            self.inPlay = true
+        else
+            self.inPlay = true --random powerup
+        end
+    end
 
 
     self.x = self.x + self.dx * dt
     self.y = self.y + self.dy * dt
+end
+
+function Powerup:reset()
+    self.x = math.random(200, VIRTUAL_WIDTH) / 2 - 2
+    self.y = 2
+    self.dx = 0
+    self.dy = 35
 end
 
 function Powerup:render()
