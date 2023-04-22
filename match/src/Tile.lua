@@ -44,7 +44,7 @@ function Tile:render(x, y)
 
     --if shiny draw something remarkable
     if self.isShiny == true then
-        love.graphics.setFont(gFonts['medium'])
-        love.graphics.printf( "☆", self.x + x, self.y + y, 100)
+        love.graphics.setFont(gFonts['large'])
+        love.graphics.printf( "*", self.x + x, self.y + y, 100)
     end
 end
