@@ -56,6 +56,18 @@ function PlayerWalkingState:update(dt)
             gStateMachine:change('start')
         end
     end
+        -- check if we've collided with any collidable game objects
+        for k, object in pairs(self.player.level.objects) do
+            if object:collides(self.player) then
+                if object.texture == 'flags' then
+                                    -- necessary to check if the player has the key
+                    object.onCollide(self.player, object)
+                elseif object.consumable then
+                    object.onConsume(self.player)
+                    table.remove(self.player.level.objects, k)
+                end
+            end
+        end
 
     if love.keyboard.wasPressed('space') then
         self.player:changeState('jump')

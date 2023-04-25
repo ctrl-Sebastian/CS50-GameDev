@@ -91,3 +91,19 @@ JUMP_BLOCKS = {}
 for i = 1, 30 do
     table.insert(JUMP_BLOCKS, i)
 end
+
+KEYS = {
+    1, 2, 3, 4
+}
+
+LOCKS = {
+    5, 6, 7, 8
+}
+
+POLES = {
+    1, 2, 3, 4, 5, 6
+}
+
+FLAGS = {
+    7, 8, 9, 16, 17, 18, 25, 26, 27, 34, 35, 36
+}

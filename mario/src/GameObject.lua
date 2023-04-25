@@ -33,5 +33,9 @@ function GameObject:update(dt)
 end
 
 function GameObject:render()
-    love.graphics.draw(gTextures[self.texture], gFrames[self.texture][self.frame], self.x, self.y)
+    if self.texture == "keys-and-locks" and self.hit == true then 
+        -- do nothing
+    else
+        love.graphics.draw(gTextures[self.texture], gFrames[self.texture][self.frame], self.x, self.y)
+    end
 end

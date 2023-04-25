@@ -19,7 +19,7 @@ function PlayState:init()
     self.gravityAmount = 6
 
     self.player = Player({
-        x = 0, y = 0,
+        x = self:safeSpawn() * 16, y = 0,
         width = 16, height = 20,
         texture = 'green-alien',
         stateMachine = StateMachine {
@@ -31,6 +31,28 @@ function PlayState:init()
         map = self.tileMap,
         level = self.level
     })
+
+    self:spawnEnemies()
+
+    self.player:changeState('falling')
+end
+
+function PlayState:enter(params)
+    self.camX = 0
+    self.camY = 0
+    self.level = LevelMaker.generate(params.mapWidth + 15, 10)
+    self.tileMap = self.level.tileMap
+    self.background = math.random(3)
+    self.backgroundX = 0
+
+    self.gravityOn = true
+    self.gravityAmount = 6
+
+    self.player.map = self.tileMap
+    self.player.level = self.level
+    self.player.score = params.score
+    self.player.x = self:safeSpawn() * 16
+
 
     self:spawnEnemies()
 
@@ -131,6 +153,19 @@ function PlayState:spawnEnemies()
                         table.insert(self.level.entities, snail)
                     end
                 end
+            end
+        end
+    end
+end
+
+-- return the closest column that has a ground , starting from left
+function PlayState:safeSpawn()
+    local safeSpawn = 0
+    for x = 1, self.level.tileMap.width do
+        for y = 5, self.level.tileMap.height do
+            if self.level.tileMap.tiles[y][x].id == TILE_ID_GROUND then
+                safeSpawn = x - 1
+                return safeSpawn
             end
         end
     end
