@@ -16,7 +16,7 @@ function PlayState:init()
     self.backgroundX = 0
 
     self.gravityOn = true
-    self.gravityAmount = 6
+    self.gravityAmount = 4
 
     self.player = Player({
         x = self:safeSpawn() * 16, y = 0,
@@ -46,7 +46,7 @@ function PlayState:enter(params)
     self.backgroundX = 0
 
     self.gravityOn = true
-    self.gravityAmount = 6
+    self.gravityAmount = 4
 
     self.player.map = self.tileMap
     self.player.level = self.level
