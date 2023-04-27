@@ -104,6 +104,28 @@ function Room:generateObjects()
 
     -- add to list of objects in scene (only one switch for now)
     table.insert(self.objects, switch)
+
+    for i = 1, math.random(7) do
+        local pot = GameObject(
+            GAME_OBJECT_DEFS['pot'],
+            math.random(MAP_RENDER_OFFSET_X + TILE_SIZE,
+                        VIRTUAL_WIDTH - TILE_SIZE * 2 - 16),
+            math.random(MAP_RENDER_OFFSET_Y + TILE_SIZE,
+                        VIRTUAL_HEIGHT - (VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_SIZE) + MAP_RENDER_OFFSET_Y - TILE_SIZE - 16)
+        )
+        pot.frame = pot.frames[math.random(#POT_FRAMES)]
+        pot.onCollide = function()
+            if love.keyboard.isDown('p') and not self.player.hasPot then
+                self.player.liftedObject = pot
+                self.player:changeState('pot-lift')
+                pot.solid = false
+                pot:lift(self.player)
+                pot.lifted = true
+            end
+        end
+        table.insert(self.objects, pot)
+
+    end
 end
 
 --[[
@@ -157,8 +179,26 @@ function Room:update(dt)
         local entity = self.entities[i]
 
         -- remove entity from the table if health is <= 0
-        if entity.health <= 0 then
-            entity.dead = true
+        if entity.health <= 0 and not entity.dead then
+            
+            if math.random(5) == 1 then
+                local heart = GameObject(
+                    GAME_OBJECT_DEFS['heart'],
+                    entity.x,
+                    entity.y)
+                    heart.onCollide = function()
+                        if self.player.health < 5 then
+                            self.player:cure(2)
+                        elseif self.player.health == 5 then
+                            self.player:cure(1)
+                        else
+                            self.player:cure(0)
+                        end
+                    end
+                    table.insert(self.objects, heart)
+                end
+                entity.dead = true
+
         elseif not entity.dead then
             entity:processAI({room = self}, dt)
             entity:update(dt)
@@ -182,6 +222,21 @@ function Room:update(dt)
         -- trigger collision callback on object
         if self.player:collides(object) then
             object:onCollide()
+            if object.solid then
+                -- Check collision direction and stop player from walking through it
+                if love.keyboard.isDown('left') and self.player.x > object.x + object.width / 2 then
+                    self.player.x = object.x + object.width + 3
+                elseif love.keyboard.isDown('right') and self.player.x < object.x + object.width / 2 then
+                    self.player.x = object.x - self.player.width - 3
+                elseif love.keyboard.isDown('up') and self.player.y + self.player.height / 2 > object.y + object.height / 2 then
+                    self.player.y = object.y + object.height + 3 - self.player.height / 2
+                elseif love.keyboard.isDown('down') and self.player.y + self.player.height < object.y + object.height / 2 then
+                    self.player.y = object.y - self.player.height - 2
+                end
+            end
+            if object.isConsumable == true then
+                table.remove(self.objects, k)
+            end   
         end
     end
 end

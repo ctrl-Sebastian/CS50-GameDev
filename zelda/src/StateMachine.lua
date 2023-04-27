@@ -37,3 +37,28 @@ end
 function StateMachine:processAI(params, dt)
 	self.current:processAI(params, dt)
 end
+
+--[[
+	Error
+
+src/StateMachine.lua:16: assertion failed!
+
+
+Traceback
+
+[love "callbacks.lua"]:228: in function 'handler'
+[C]: in function 'assert'
+src/StateMachine.lua:16: in function 'change'
+src/Entity.lua:79: in function 'changeState'
+src/states/entity/player/PlayerPotWalkState.lua:34: in function 'update'
+src/StateMachine.lua:23: in function 'update'
+src/Entity.lua:99: in function 'update'
+src/Player.lua:16: in function 'update'
+src/world/Room.lua:166: in function 'update'
+src/world/Dungeon.lua:137: in function 'update'
+src/states/game/PlayState.lua:48: in function 'update'
+src/StateMachine.lua:23: in function 'update'
+main.lua:51: in function 'update'
+[love "callbacks.lua"]:162: in function <[love "callbacks.lua"]:144>
+[C]: in function 'xpcall'
+]]

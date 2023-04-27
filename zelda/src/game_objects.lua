@@ -24,7 +24,27 @@ GAME_OBJECT_DEFS = {
             }
         }
     },
+    ['heart'] = {
+        type = 'heart',
+        texture = 'hearts',
+        frame = 5,
+        width = 16,
+        height = 16,
+        solid = false,
+        canBeLifted = false,
+        isConsumable = true
+    },
     ['pot'] = {
-        -- TODO
+        type = 'pot',
+        texture = 'tiles',
+        frame = 14,
+        frames = POT_FRAMES,
+        width = 16,
+        height = 16,
+        solid = true,
+        canBeLifted = true,
+        isConsumable = false,
+        lifted = false,
+        throwSpeed = 100
+        }
     }
-}

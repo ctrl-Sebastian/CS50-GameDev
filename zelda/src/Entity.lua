@@ -66,6 +66,10 @@ function Entity:damage(dmg)
     self.health = self.health - dmg
 end
 
+function Entity:cure(hp)
+    self.health = self.health + hp
+end
+
 function Entity:goInvulnerable(duration)
     self.invulnerable = true
     self.invulnerableDuration = duration
