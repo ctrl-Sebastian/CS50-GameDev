@@ -20,6 +20,7 @@ function EntityWalkState:init(entity, dungeon)
 
     -- keeps track of whether we just hit a wall
     self.bumped = false
+    self.bumbedObject = false
 end
 
 function EntityWalkState:update(dt)
@@ -86,6 +87,7 @@ function EntityWalkState:processAI(params, dt)
     end
 
     self.movementTimer = self.movementTimer + dt
+    self.bumbedObject = false
 end
 
 function EntityWalkState:render()

@@ -44,7 +44,6 @@ GAME_OBJECT_DEFS = {
         solid = true,
         canBeLifted = true,
         isConsumable = false,
-        lifted = false,
-        throwSpeed = 100
+        lifted = false
         }
     }

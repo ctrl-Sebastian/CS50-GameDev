@@ -17,6 +17,7 @@ require 'src/Hitbox'
 require 'src/Player'
 require 'src/StateMachine'
 require 'src/Util'
+require 'src/Projectile'
 
 require 'src/world/Doorway'
 require 'src/world/Dungeon'

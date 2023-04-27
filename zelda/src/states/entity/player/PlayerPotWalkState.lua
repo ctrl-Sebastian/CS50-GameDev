@@ -36,6 +36,11 @@ function PlayerPotWalkState:update(dt)
 
     self.entity.liftedObject.x = self.entity.x
     self.entity.liftedObject.y = self.entity.y - self.entity.liftedObject.height + 2
+        
+    if love.keyboard.wasPressed('t') and self.entity.hasPot then
+        self.entity.hasPot = false
+        self.entity:changeState('pot-throw')
+    end
     
     -- perform base collision detection against walls
     EntityWalkState.update(self, dt)

@@ -25,7 +25,9 @@ end
 
 function Player:render()
     Entity.render(self)
-    
+    if self.hasPot then
+        self.liftedObject:render(0, 0)
+    end
     -- love.graphics.setColor(255, 0, 255, 255)
     -- love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
     -- love.graphics.setColor(255, 255, 255, 255)

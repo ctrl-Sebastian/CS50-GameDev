@@ -30,6 +30,10 @@ function Room:init(player)
     table.insert(self.doorways, Doorway('left', false, self))
     table.insert(self.doorways, Doorway('right', false, self))
 
+    -- projectiles in the room
+    self.projectiles = {}
+
+
     -- reference to player for collisions, etc.
     self.player = player
 
@@ -40,6 +44,7 @@ function Room:init(player)
     -- used for drawing when this room is the next room, adjacent to the active
     self.adjacentOffsetX = 0
     self.adjacentOffsetY = 0
+
 end
 
 --[[
@@ -239,6 +244,28 @@ function Room:update(dt)
             end   
         end
     end
+
+    local projectilesToDestroy = {}
+
+    for k, projectile in pairs(self.projectiles) do
+        projectile:update(dt)
+        if projectile.destroy then
+            table.insert(projectilesToDestroy, k)
+        end
+        -- Check for collisions with entities and apply damage if so
+        -- Also remove projectile and possibly later call a pot breaking animation
+        for j, entity in pairs(self.entities) do
+            if projectile:collides(entity) and not entity.dead then
+                entity:damage(1)
+                table.insert(projectilesToDestroy, k)
+            end
+        end
+    end
+
+    for i, index in pairs(projectilesToDestroy) do
+        table.remove(self.projectiles, index)
+        gSounds['hit-enemy']:play()
+    end
 end
 
 function Room:render()
@@ -289,6 +316,10 @@ function Room:render()
     
     if self.player then
         self.player:render()
+    end
+
+    for k, projectile in pairs(self.projectiles) do
+        projectile:render(self.adjacentOffsetX, self.adjacentOffsetY)
     end
 
     love.graphics.setStencilTest()

@@ -38,7 +38,7 @@ function GameObject:init(def, x, y)
 end
 
 function GameObject:update(dt)
-
+    
 end
 
 function GameObject:collides(target)
@@ -48,6 +48,10 @@ end
 
 function GameObject:lift(player)
     Timer.tween(0.465, {[self] = {y = player.y - self.height + 2, x = player.x}})
+end
+
+function GameObject:fire()
+
 end
 
 function GameObject:render(adjacentOffsetX, adjacentOffsetY)

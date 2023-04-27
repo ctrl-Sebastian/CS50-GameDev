@@ -8,11 +8,8 @@ function PlayerLiftState:init(player, dungeon)
     self.player.offsetY = 5
     self.player.offsetX = 0
 
-    -- create hitbox based on where the player is and facing
-    local direction = self.player.direction
-
     -- lift-left, lift-up, etc
-    self.player:changeAnimation('lift-' .. direction)
+    self.player:changeAnimation('lift-' .. self.player.direction)
 end
 
 function PlayerLiftState:update(dt)

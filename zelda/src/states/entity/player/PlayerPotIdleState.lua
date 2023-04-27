@@ -13,8 +13,8 @@ function PlayerPotIdleState:update(dt)
         self.entity:changeState('pot-walk')
     end
 
-    if love.keyboard.wasPressed('t') then
+    if love.keyboard.wasPressed('t') and self.entity.hasPot then
         self.entity.hasPot = false
-        self.entity:changeState('idle')
+        self.entity:changeState('pot-throw')
     end
 end
