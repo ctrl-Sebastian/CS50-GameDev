@@ -47,6 +47,8 @@ require 'src/states/game/PlayState'
 require 'src/states/game/StartState'
 require 'src/states/game/TakeTurnState'
 
+require 'src/states/game/LevelUpMenuState'
+
 require 'src/world/Level'
 require 'src/world/tile_ids'
 require 'src/world/Tile'

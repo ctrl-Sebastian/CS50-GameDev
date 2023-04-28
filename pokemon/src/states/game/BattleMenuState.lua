@@ -62,7 +62,8 @@ function BattleMenuState:init(battleState)
                     end)
                 end
             }
-        }
+        },
+        hasCursor = true
     }
 end
 
