@@ -31,6 +31,10 @@ function Alien:init(world, type, x, y, userData)
 
     -- used to keep track of despawning the Alien and flinging it
     self.launched = false
+
+    --flags to control spliting behaviour
+    self.canSplit = false
+    self.splited = false
 end
 
 function Alien:render()

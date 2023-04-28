@@ -37,6 +37,8 @@ function Level:init()
             local sumVel = math.abs(velX) + math.abs(velY)
 
             if sumVel > 20 then
+                --the player wont be able to split
+                self.launchMarker.alien.canSplit = false
                 table.insert(self.destroyedBodies, obstacleFixture:getBody())
             end
         end
@@ -69,6 +71,8 @@ function Level:init()
             local sumVel = math.abs(velX) + math.abs(velY)
 
             if sumVel > 20 then
+                --the player wont be able to split
+                self.launchMarker.alien.canSplit = false
                 table.insert(self.destroyedBodies, alienFixture:getBody())
             end
         end

@@ -27,6 +27,7 @@ function AlienLaunchMarker:init(world)
 
     -- our alien we will eventually spawn
     self.alien = nil
+    self.aliens = {}
 end
 
 function AlienLaunchMarker:update(dt)
@@ -47,6 +48,9 @@ function AlienLaunchMarker:update(dt)
 
             -- spawn new alien in the world, passing in user data of player
             self.alien = Alien(self.world, 'round', self.shiftedX, self.shiftedY, 'Player')
+            table.insert(self.aliens, self.alien)
+
+            self.alien.canSplit = true
 
             -- apply the difference between current X,Y and base X,Y as launch vector impulse
             self.alien.body:setLinearVelocity((self.baseX - self.shiftedX) * 10, (self.baseY - self.shiftedY) * 10)
@@ -63,6 +67,28 @@ function AlienLaunchMarker:update(dt)
             
             self.shiftedX = math.min(self.baseX + 30, math.max(x, self.baseX - 30))
             self.shiftedY = math.min(self.baseY + 30, math.max(y, self.baseY - 30))
+        end
+    end
+
+    if self.launched then
+        if self.alien.canSplit then
+            if love.keyboard.wasPressed('space') then
+                self.alien.splited = true
+                print("split")
+                local alienClone1 = Alien(self.world, 'round', self.alien.body:getX(), self.alien.body:getY() - 10, 'Player')
+                alienClone1.body:setLinearVelocity((self.baseX - self.shiftedX) * 10, (self.baseY - self.shiftedY) * 10)
+                alienClone1.fixture:setRestitution(0.4)
+                alienClone1.body:setAngularDamping(1)
+    
+                
+                local alienClone2 = Alien(self.world, 'round', self.alien.body:getX(), self.alien.body:getY() + 10, 'Player')
+                alienClone2.body:setLinearVelocity((self.baseX - self.shiftedX) * 10, (self.baseY - self.shiftedY) * 10)
+                alienClone2.fixture:setRestitution(0.4)
+                alienClone2.body:setAngularDamping(1)
+
+                table.insert(self.aliens, alienClone1)
+                table.insert(self.aliens, alienClone2)
+            end
         end
     end
 end
@@ -103,6 +129,9 @@ function AlienLaunchMarker:render()
         
         love.graphics.setColor(1, 1, 1, 1)
     else
-        self.alien:render()
+
+        for k, alien in pairs(self.aliens) do
+            alien:render()
+        end
     end
 end
