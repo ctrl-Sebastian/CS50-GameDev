@@ -1,4 +1,5 @@
 # Flappy bird
+## Specification
 
 -Randomize the gap between pipes (vertical space), such that they’re no longer hardcoded to 90 pixels.
 
