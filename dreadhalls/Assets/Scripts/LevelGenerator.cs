@@ -34,7 +34,7 @@ public class LevelGenerator : MonoBehaviour {
 	private int mazeX = 4, mazeY = 1;
 
 	// declare the max num of holes
-	public int numHoles = 4;
+	public static int numHoles = 4;
 
 	// Use this for initialization
 	void Start () {
