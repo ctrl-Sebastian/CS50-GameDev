@@ -16,6 +16,7 @@ public class MazeCounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("mazeCounter: " + mazeCounter);
         if (mazeCounter > 0) {
 			counter.text = "Maze: " + mazeCounter;
 		}
