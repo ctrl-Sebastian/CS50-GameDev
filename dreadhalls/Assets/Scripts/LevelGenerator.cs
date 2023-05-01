@@ -33,6 +33,9 @@ public class LevelGenerator : MonoBehaviour {
 	// we use these to dig through our maze and to spawn the pickup at the end
 	private int mazeX = 4, mazeY = 1;
 
+	// declare the max num of holes
+	public int numHoles = 4;
+
 	// Use this for initialization
 	void Start () {
 
@@ -42,6 +45,8 @@ public class LevelGenerator : MonoBehaviour {
 		// create actual maze blocks from maze boolean data
 		for (int z = 0; z < mazeSize; z++) {
 			for (int x = 0; x < mazeSize; x++) {
+				bool spawnHole = false;
+
 				if (mapData[z, x]) {
 					CreateChildPrefab(wallPrefab, wallsParent, x, 1, z);
 					CreateChildPrefab(wallPrefab, wallsParent, x, 2, z);
@@ -56,9 +61,18 @@ public class LevelGenerator : MonoBehaviour {
 					// flag as placed so we never consider placing again
 					characterPlaced = true;
 				}
+				
+				if (characterPlaced){
+					spawnHole = numHoles > 0 && Random.value < 0.15;
+				}
+				
+				if (spawnHole) {
+					// will decrese each time until its 0
+					numHoles--;
 
-				// create floor and ceiling
-				CreateChildPrefab(floorPrefab, floorParent, x, 0, z);
+				} else {
+					CreateChildPrefab(floorPrefab, floorParent, x, 0, z);
+				}
 
 				if (generateRoof) {
 					CreateChildPrefab(ceilingPrefab, wallsParent, x, 4, z);
