@@ -314,7 +314,7 @@ function Board:getFallingTiles()
                                 --the color is going to be a random value        variety for each new tile after the first board
                                 --between 0 and the quantity of colors in       is the minimun value between the current level and 6, 
                                 --self.colors                                      meaning, for each level, increases the variety by 1
-                local tile =Tile(x, y, self.colors[math.random(#self.colors)], math.min(math.random(self.level+1), 6))
+                local tile =Tile(x, y, self.colors[math.random(#self.colors)], math.min(math.random(self.level), 6))
                 tile.y = -32
                 self.tiles[y][x] = tile
 
